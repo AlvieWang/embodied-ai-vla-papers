@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>具身智能 & VLA 论文索引（2025-2026）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    color: white;
+    padding: 20px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .header p { font-size: 13px; opacity: 0.85; }
+  .header-stats { display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
+  .header-stat { background: rgba(255,255,255,0.18); border-radius: 8px; padding: 8px 16px; font-size: 13px; }
+  .header-stat strong { font-size: 18px; display: block; margin-bottom: 2px; }
+
+  .container { display: flex; height: calc(100vh - 90px); }
+
+  .sidebar {
+    width: 340px; min-width: 340px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+  .sidebar-search { padding: 8px 16px 12px; }
+  .sidebar-search input {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 13px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .sidebar-search input:focus { border-color: #4285f4; }
+
+  .tree { padding: 0 8px; }
+  .tree-item { user-select: none; }
+  .tree-toggle {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px; border-radius: 6px;
+    cursor: pointer; font-size: 13px;
+    transition: background 0.15s;
+    line-height: 1.4;
+  }
+  .tree-toggle:hover { background: #f0f4ff; }
+  .tree-toggle .arrow {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+    flex-shrink: 0; font-size: 10px; color: #888;
+  }
+  .tree-toggle .arrow.open { transform: rotate(90deg); }
+  .tree-toggle .icon { flex-shrink: 0; font-size: 14px; }
+  .tree-toggle .label { flex: 1; }
+  .tree-toggle .count {
+    background: #e8eaed; color: #555;
+    font-size: 11px; padding: 1px 6px;
+    border-radius: 10px; flex-shrink: 0;
+  }
+  .tree-toggle .count.highlight { background: #e8f0fe; color: #1a73e8; }
+
+  .tree-children { padding-left: 20px; display: none; }
+  .tree-children.open { display: block; }
+
+  .paper-link {
+    display: block; padding: 4px 8px 4px 40px;
+    font-size: 12px; color: #333;
+    text-decoration: none; border-radius: 4px;
+    line-height: 1.5; transition: background 0.15s;
+    cursor: pointer;
+  }
+  .paper-link:hover { background: #e8f0fe; color: #1a73e8; }
+
+  .cat-1 .tree-toggle .icon { color: #e65100; }
+  .cat-2 .tree-toggle .icon { color: #1565c0; }
+  .cat-3 .tree-toggle .icon { color: #2e7d32; }
+  .cat-4 .tree-toggle .icon { color: #6a1b9a; }
+  .cat-5 .tree-toggle .icon { color: #ad1457; }
+  .cat-6 .tree-toggle .icon { color: #00838f; }
+  .cat-7 .tree-toggle .icon { color: #4e342e; }
+  .cat-8 .tree-toggle .icon { color: #f57f17; }
+  .cat-9 .tree-toggle .icon { color: #283593; }
+  .cat-10 .tree-toggle .icon { color: #00695c; }
+
+  .main { flex: 1; overflow-y: auto; padding: 24px 32px; }
+  .main h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #333; }
+  .intro {
+    background: white; border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 16px;
+    border: 1px solid #e0e0e0;
+    line-height: 1.7; font-size: 13.5px; color: #555;
+  }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn {
+    padding: 5px 14px; border-radius: 20px;
+    border: 1px solid #ddd; background: white;
+    font-size: 12.5px; cursor: pointer;
+    transition: all 0.2s; color: #555;
+  }
+  .filter-btn:hover { border-color: #4285f4; color: #4285f4; }
+  .filter-btn.active { background: #4285f4; color: white; border-color: #4285f4; }
+
+  .paper-grid { display: flex; flex-direction: column; gap: 10px; }
+  .paper-card {
+    background: white; border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    padding: 14px 18px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .paper-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: #c8d8f8; }
+  .paper-card-title {
+    font-size: 14px; font-weight: 500;
+    margin-bottom: 6px; color: #1a73e8;
+    cursor: pointer; text-decoration: none; display: block;
+  }
+  .paper-card-title:hover { text-decoration: underline; }
+  .paper-card-meta { display: flex; gap: 12px; font-size: 12px; color: #888; flex-wrap: wrap; }
+  .venue-tag { padding: 1px 7px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+
+  .highlight { background: #fff59d; border-radius: 2px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: #999; font-size: 14px; }
+
+  @media (max-width: 768px) {
+    .container { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; min-width: auto; max-height: 50vh; border-right: none; border-bottom: 1px solid #e0e0e0; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 具身智能 & VLA 论文索引</h1>
+  <p>2025–2026 顶会论文汇总 · 点击论文标题直接跳转 arXiv</p>
+  <div class="header-stats">
+    <div class="header-stat"><strong id="stat-total">0</strong>篇论文</div>
+    <div class="header-stat"><strong>10</strong>大研究方向</div>
+    <div class="header-stat"><strong>9+</strong>顶会覆盖</div>
+    <div class="header-stat"><strong id="stat-vla">0</strong>篇 VLA 核心</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" id="search-input" placeholder="🔍 搜索论文标题或会议..." oninput="onSearch(this.value)">
+    </div>
+    <div class="tree" id="tree"></div>
+  </div>
+
+  <div class="main">
+    <div class="intro">
+      <b>使用说明：</b>左侧为按研究方向分类的索引树，可展开/折叠。
+      点击论文标题可跳转至对应 arXiv 页面。
+      使用上方筛选按钮可按会议过滤，或使用搜索框进行关键词搜索。
+    </div>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="paper-grid" id="paper-grid"></div>
+    <div class="empty-state" id="empty-state" style="display:none;">
+      没有找到匹配的论文，请尝试其他关键词。
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== 论文数据 =====================
+const P = {
+  // category 1: VLA模型架构创新
+  "1. VLA模型架构创新": {
+    icon: "🏗️", cls: "cat-1",
+    papers: {
+      "ICLR 2026": [
+        ["SpatialVLA: Exploring Spatial Representations for Vision-Language-Action Model", "https://arxiv.org/abs/2501.15830"],
+        ["MemoryVLA: Perceptual-Cognitive Memory in VLA Models for Robotic Manipulation", "https://arxiv.org/search/?query=MemoryVLA+Perceptual+Cognitive&searchtype=all"],
+        ["PixelVLA: Advancing Pixel-level Understanding in Vision-Language-Action Model", "https://arxiv.org/search/?query=PixelVLA+Pixel+Level&searchtype=all"],
+        ["MetaVLA: Unified Meta Co-Training for Efficient Embodied Adaptation", "https://arxiv.org/search/?query=MetaVLA+Meta+Co-Training&searchtype=all"],
+        ["Unifying Diffusion and Autoregression for Generalizable Vision-Language-Action Model", "https://arxiv.org/search/?query=Unifying+Diffusion+Autoregression+VLA&searchtype=all"],
+        ["Hybrid Training for Vision-Language-Action Models", "https://arxiv.org/search/?query=Hybrid+Training+VLA&searchtype=all"],
+        ["WholeBodyVLA: Towards Unified Latent VLA for Whole-body Loco-manipulation", "https://arxiv.org/search/?query=WholeBodyVLA+Loco-manipulation&searchtype=all"],
+        ["SP-VLA: Joint Model Scheduling and Token Pruning for VLA Acceleration", "https://arxiv.org/search/?query=SP-VLA+Token+Pruning+VLA&searchtype=all"],
+        ["AutoQVLA: Not All Channels Are Equal in VLA Model Quantization", "https://arxiv.org/search/?query=AutoQVLA+Quantization&searchtype=all"],
+        ["Interleave-VLA: Enhancing Robot Manipulation with Image-Text Interleaved Instructions", "https://arxiv.org/search/?query=Interleave-VLA+Interleaved&searchtype=all"],
+        ["Unified Diffusion VLA: Via Joint Discrete Diffusion Process", "https://arxiv.org/search/?query=Unified+Diffusion+VLA+Discrete&searchtype=all"],
+        ["TwinVLA: Data-Efficient Bimanual Manipulation with Twin Single-Arm VLA Models", "https://arxiv.org/search/?query=TwinVLA+Bimanual&searchtype=all"],
+        ["FASTer: Powerful and Efficient Autoregressive VLA Models", "https://arxiv.org/search/?query=FASTer+Autoregressive+VLA&searchtype=all"],
+        ["X-VLA: Soft-Prompted Transformer as Scalable Cross-Embodiment VLA Model", "https://arxiv.org/search/?query=X-VLA+Cross-Embodiment&searchtype=all"],
+        ["Actions as Language: Fine-Tuning VLMs into VLAs Without Catastrophic Forgetting", "https://arxiv.org/search/?query=Actions+as+Language+VLAs&searchtype=all"],
+        ["OneTwoVLA: Unified VLA Model with Adaptive Reasoning", "https://arxiv.org/search/?query=OneTwoVLA+Adaptive+Reasoning&searchtype=all"],
+        ["VLM4VLA: Revisiting Vision-Language-Models in VLA Models", "https://arxiv.org/search/?query=VLM4VLA+Vision+Language&searchtype=all"],
+        ["Spatial Forcing: Implicit Spatial Representation Alignment for VLA Model", "https://arxiv.org/search/?query=Spatial+Forcing+VLA&searchtype=all"],
+        ["Self-Improving VLA Models with Data Generation via Residual RL", "https://arxiv.org/search/?query=Self-Improving+VLA+Residual&searchtype=all"],
+        ["Action-aware Dynamic Pruning for Efficient VLA Manipulation", "https://arxiv.org/search/?query=Action-aware+Dynamic+Pruning+VLA&searchtype=all"],
+      ],
+      "NeurIPS 2025": [
+        ["Fast-in-Slow: Dual-System VLA Model Unifying Fast Manipulation within Slow Reasoning", "https://arxiv.org/search/?query=Fast-in-Slow+Dual+System+VLA&searchtype=all"],
+        ["CogVLA: Cognition-Aligned VLA Models via Instruction-Driven Routing", "https://arxiv.org/search/?query=CogVLA+Cognition+Aligned&searchtype=all"],
+        ["VideoVLA: Video Generators Can Be Generalizable Robot Manipulators", "https://arxiv.org/search/?query=VideoVLA+Video+Generators&searchtype=all"],
+        ["ChatVLA-2: VLA Model with Open-World Reasoning", "https://arxiv.org/search/?query=ChatVLA-2+Open+World&searchtype=all"],
+        ["VLA-OS: Structuring and Dissecting Planning in VLA Models", "https://arxiv.org/search/?query=VLA-OS+Planning+Structuring&searchtype=all"],
+        ["ThinkAct: VLA Reasoning via Reinforced Visual Latent Planning", "https://arxiv.org/search/?query=ThinkAct+VLA+Reinforced+Planning&searchtype=all"],
+        ["DreamVLA: VLA Model Dreamed with Comprehensive World Knowledge", "https://arxiv.org/search/?query=DreamVLA+World+Knowledge&searchtype=all"],
+        ["4D-VLA: Spatiotemporal VLA Pretraining with Cross-Scene Calibration", "https://arxiv.org/search/?query=4D-VLA+Spatiotemporal+Pretraining&searchtype=all"],
+        ["SAFE: Multitask Failure Detection for VLA Models", "https://arxiv.org/search/?query=SAFE+Failure+Detection+VLA&searchtype=all"],
+        ["Knowledge Insulating VLA Models: Train Fast, Run Fast, Generalize Better", "https://arxiv.org/search/?query=Knowledge+Insulating+VLA&searchtype=all"],
+        ["Self-Improving Embodied Foundation Models", "https://arxiv.org/search/?query=Self-Improving+Embodied+Foundation&searchtype=all"],
+      ],
+      "CoRL 2025": [
+        ["π₀.₅: A VLA Model with Open-World Generalization", "https://arxiv.org/search/?query=pi0.5+Open+World+Generalization&searchtype=all"],
+        ["Long-VLA: Unleashing Long-Horizon Capability of VLA Model", "https://arxiv.org/search/?query=Long-VLA+Long+Horizon&searchtype=all"],
+        ["TA-VLA: Elucidating Design Space of Torque-aware VLA Models", "https://arxiv.org/search/?query=TA-VLA+Torque+aware&searchtype=all"],
+        ["Focusing on What Matters: Object-Centric Tokenization for VLA Models", "https://arxiv.org/search/?query=Object-Centric+Tokenization+VLA&searchtype=all"],
+        ["FLOWER: Democratizing Generalist Robot Policies with Efficient VLA Flow Policies", "https://arxiv.org/search/?query=FLOWER+VLA+Flow+Policies&searchtype=all"],
+        ["DexVLA: Vision-Language Model with Plug-In Diffusion Expert for General Robot Control", "https://arxiv.org/search/?query=DexVLA+Plug+In+Diffusion&searchtype=all"],
+        ["3DS-VLA: A 3D Spatial-Aware VLA Model for Robust Multi-Task Manipulation", "https://arxiv.org/search/?query=3DS-VLA+3D+Spatial+Aware&searchtype=all"],
+        ["GraspVLA: Grasping Foundation Model Pre-trained on Billion-Scale Synthetic Action Data", "https://arxiv.org/search/?query=GraspVLA+Billion+Scale&searchtype=all"],
+        ["ControlVLA: Few-shot Object-centric Adaptation for Pre-trained VLA Models", "https://arxiv.org/search/?query=ControlVLA+Few-shot+Adaptation&searchtype=all"],
+        ["TrackVLA: Embodied Visual Tracking in the Wild", "https://arxiv.org/search/?query=TrackVLA+Visual+Tracking&searchtype=all"],
+      ],
+      "CVPR 2025": [
+        ["MoManipVLA: Transferring VLA Models for General Mobile Manipulation", "https://arxiv.org/abs/2503.13446"],
+        ["CoT-VLA: Visual Chain-of-Thought Reasoning for VLA Models", "https://arxiv.org/search/?query=CoT-VLA+Chain+of+Thought&searchtype=all"],
+        ["SOLAMI: Social VLA Modeling for Immersive Interaction with 3D Characters", "https://arxiv.org/abs/2412.00174"],
+        ["Object-Centric Prompt-Driven VLA Model for Robotic Manipulation", "https://arxiv.org/search/?query=Object-Centric+Prompt+Driven+VLA&searchtype=all"],
+        ["UniAct: Universal Actions For Enhanced Embodied Foundation Models", "https://arxiv.org/search/?query=UniAct+Universal+Actions&searchtype=all"],
+      ],
+      "ICLR 2025": [
+        ["LLaRA: Supercharging Robot Learning Data for Vision-Language Policy", "https://arxiv.org/abs/2406.20095"],
+        ["VLAS: VLA Model With Speech Instructions For Customized Robot Manipulation", "https://arxiv.org/abs/2502.13508"],
+        ["TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness", "https://arxiv.org/abs/2412.10345"],
+      ],
+      "ICCV 2025": [
+        ["VQ-VLA: Improving VLA Models via Scaling Vector-Quantized Action Tokenizers", "https://arxiv.org/abs/2507.01016"],
+        ["Dita: Scaling Diffusion Transformer for Generalist VLA Policy", "https://arxiv.org/abs/2503.19757"],
+        ["CoA-VLA: Improving VLA Models via Visual-Text Chain-of-Affordance", "https://arxiv.org/search/?query=CoA-VLA+Chain+of+Affordance&searchtype=all"],
+        ["FedVLA: Federated VLA Learning with Dual Gating Mixture-of-Experts", "https://arxiv.org/search/?query=FedVLA+Federated+Mixture+Experts&searchtype=all"],
+      ],
+      "ICML 2025": [
+        ["Hi Robot: Open-Ended Instruction Following with Hierarchical VLA Models", "https://arxiv.org/abs/2502.19417"],
+        ["OTTER: A VLA Model with Text-Aware Visual Feature Extraction", "https://arxiv.org/abs/2503.03734"],
+        ["UP-VLA: A Unified Understanding and Prediction Model for Embodied Agent", "https://arxiv.org/abs/2501.18867"],
+      ],
+    }
+  },
+  // category 2: 世界模型与视频生成
+  "2. 世界模型与视频生成": {
+    icon: "🌐", cls: "cat-2",
+    papers: {
+      "NeurIPS 2025": [
+        ["DMWM: Dual-Mind World Model with Long-Term Imagination", "https://arxiv.org/search/?query=DMWM+Dual-Mind+World+Model&searchtype=all"],
+        ["Overcoming Challenges of Long-Horizon Prediction in Driving World Models", "https://arxiv.org/search/?query=Long-Horizon+Prediction+Driving+World+Models&searchtype=all"],
+        ["WISA: World Simulator Assistant for Physics-Aware Text-to-Video", "https://arxiv.org/search/?query=WISA+World+Simulator+Assistant&searchtype=all"],
+        ["EnerVerse: Envisioning Embodied Future Space for Robotics Manipulation", "https://arxiv.org/search/?query=EnerVerse+Embodied+Future+Space&searchtype=all"],
+      ],
+      "CVPR 2025": [
+        ["TASTE-Rob: Advancing Video Generation for Generalizable Robotic Manipulation", "https://arxiv.org/abs/2503.11423"],
+        ["VidBot: Learning 3D Actions from 2D Human Videos for Zero-Shot Robotic Manipulation", "https://arxiv.org/abs/2503.07135"],
+        ["GraphMimic: Graph-to-Graphs Generative Modeling from Videos for Policy Learning", "https://arxiv.org/search/?query=GraphMimic+Graph+Video+Policy&searchtype=all"],
+      ],
+      "ICLR 2025": [
+        ["Dream to Manipulate: Compositional World Models Empowering Robot Imitation", "https://arxiv.org/abs/2412.14957"],
+        ["ReViWo: Learning View-invariant World Models for Visual Robotic Manipulation", "https://arxiv.org/search/?query=ReViWo+View+invariant+World+Models&searchtype=all"],
+        ["GEVRM: Goal-Expressive Video Generation Model For Robust Visual Manipulation", "https://arxiv.org/search/?query=GEVRM+Video+Generation+Manipulation&searchtype=all"],
+      ],
+      "RSS 2025": [
+        ["Unified World Models: Coupling Video and Action Diffusion for Pretraining", "https://arxiv.org/abs/2504.02792"],
+      ],
+      "ICLR 2026": [
+        ["TD-JEPA: Latent-predictive Representations for Zero-Shot RL", "https://arxiv.org/search/?query=TD-JEPA+Latent+predictive&searchtype=all"],
+      ],
+    }
+  },
+  // category 3: 操作策略学习
+  "3. 操作策略学习（扩散策略/模仿学习/强化学习）": {
+    icon: "🦾", cls: "cat-3",
+    papers: {
+      "CoRL 2025": [
+        ["FLARE: Robot Learning with Implicit World Modeling", "https://arxiv.org/search/?query=FLARE+Robot+Learning+Implicit&searchtype=all"],
+        ["RICL: Adding In-Context Adaptability to Pre-Trained VLA Models", "https://arxiv.org/search/?query=RICL+In-Context+Adaptability&searchtype=all"],
+        ["LaVA-Man: Learning Visual Action Representations for Robot Manipulation", "https://arxiv.org/search/?query=LaVA-Man+Visual+Action+Representations&searchtype=all"],
+        ["Generalist Robot Manipulation beyond Action Labeled Data", "https://arxiv.org/search/?query=Generalist+Robot+Manipulation+beyond+Action&searchtype=all"],
+        ["ManiFlow: General Robot Manipulation Policy via Consistency Flow Training", "https://arxiv.org/search/?query=ManiFlow+Consistency+Flow&searchtype=all"],
+      ],
+      "RSS 2025": [
+        ["Reactive Diffusion Policy: Slow-Fast Visual-Tactile Policy Learning", "https://arxiv.org/abs/2503.02881"],
+        ["Dynamic Rank Adjustment in Diffusion Policies for Efficient Training", "https://arxiv.org/abs/2502.03822"],
+        ["DemoGen: Synthetic Demonstration Generation for Data-Efficient Visuomotor Policy", "https://arxiv.org/abs/2502.16932"],
+        ["You Only Teach Once: Learn One-Shot Bimanual Manipulation from Video", "https://arxiv.org/abs/2501.14208"],
+        ["CordViP: Correspondence-based Visuomotor Policy for Dexterous Manipulation", "https://arxiv.org/pdf/2502.08449"],
+      ],
+      "CVPR 2025": [
+        ["KStar Diffuser: Spatial-Temporal Graph Diffusion Policy", "https://arxiv.org/abs/2503.10743"],
+        ["Lift3D Policy: Lifting 2D Foundation Models for Robust 3D Manipulation", "https://arxiv.org/abs/2411.18623"],
+        ["FlowRAM: Grounding Flow Matching Policy with Region-Aware Mamba", "https://arxiv.org/search/?query=FlowRAM+Flow+Matching+Region+Aware&searchtype=all"],
+        ["AffordDP: Generalizable Diffusion Policy with Transferable Affordance", "https://arxiv.org/abs/2412.03142"],
+        ["DexHandDiff: Interaction-aware Diffusion Planning for Adaptive Dexterous Manipulation", "https://arxiv.org/abs/2411.18562"],
+        ["G3Flow: Generative 3D Semantic Flow for Pose-aware Manipulation", "https://arxiv.org/abs/2411.18369"],
+      ],
+      "ICLR 2025": [
+        ["GravMAD: Grounded Spatial Value Maps Guided Action Diffusion", "https://arxiv.org/abs/2409.20154"],
+        ["HAMSTER: Hierarchical Action Models For Open-World Robot Manipulation", "https://arxiv.org/abs/2502.05485"],
+        ["STRAP: Robot Sub-Trajectory Retrieval for Augmented Policy Learning", "https://arxiv.org/abs/2412.15182"],
+        ["Data Scaling Laws in Imitation Learning for Robotic Manipulation", "https://arxiv.org/abs/2410.18647"],
+        ["PIDM: Predictive Inverse Dynamics Models for Robotic Manipulation", "https://arxiv.org/abs/2412.15109"],
+        ["Robots Pre-train Robots: Manipulation-Centric Robotic Representation", "https://arxiv.org/abs/2410.22325"],
+      ],
+      "NeurIPS 2025": [
+        ["Chain-of-Action: Trajectory Autoregressive Modeling for Robotic Manipulation", "https://arxiv.org/search/?query=Chain+of+Action+Trajectory&searchtype=all"],
+        ["BEAST: Efficient Tokenization of B-Splines Encoded Action Sequences", "https://arxiv.org/search/?query=BEAST+Tokenization+B-Splines&searchtype=all"],
+        ["PointMapPolicy: Structured Point Cloud Processing for Multi-Modal Imitation", "https://arxiv.org/search/?query=PointMapPolicy+Point+Cloud+Imitation&searchtype=all"],
+        ["Compliant Residual DAgger: Improving Contact-Rich Manipulation", "https://arxiv.org/search/?query=Compliant+Residual+DAgger&searchtype=all"],
+      ],
+      "ICML 2025": [
+        ["ELEMENTAL: Interactive Learning from Demonstrations and VLMs for Reward Design", "https://arxiv.org/abs/2411.18825"],
+        ["ReinboT: Amplifying Robot VLA Manipulation with RL", "https://arxiv.org/abs/2505.07395"],
+        ["A Large Recurrent Action Model: xLSTM enables Fast Inference for Robotics", "https://arxiv.org/abs/2410.22391"],
+      ],
+    }
+  },
+  // category 4: 导航与空间理解
+  "4. 导航与空间理解": {
+    icon: "🧭", cls: "cat-4",
+    papers: {
+      "ICCV 2025": [
+        ["Move to Understand a 3D Scene: Bridging Visual Grounding and Exploration", "https://arxiv.org/abs/2507.04047"],
+        ["SAME: Learning Generic Language-Guided Visual Navigation with Mixture of Experts", "https://arxiv.org/abs/2412.05552"],
+        ["NavMorph: A Self-Evolving World Model for VLN in Continuous Environments", "https://arxiv.org/abs/2506.23468"],
+        ["Embodied VideoAgent: Persistent Memory from Egocentric Videos", "https://arxiv.org/abs/2501.00358"],
+      ],
+      "CVPR 2025": [
+        ["RoboSpatial: Teaching Spatial Understanding to VLMs for Robotics", "https://arxiv.org/abs/2411.16537"],
+        ["PhysVLM: Enabling VLMs to Understand Robotic Physical Reachability", "https://arxiv.org/abs/2503.08481"],
+        ["RoboBrain: A Unified Brain Model for Robotic Manipulation", "https://arxiv.org/abs/2502.21257"],
+        ["Code-as-Monitor: Constraint-aware Visual Programming for Robotic Failure Detection", "https://arxiv.org/abs/2412.04455"],
+        ["RoboSense: Large-scale Dataset for Egocentric Robot Perception and Navigation", "https://arxiv.org/abs/2408.15503"],
+      ],
+      "ICLR 2026": [
+        ["Embodied Navigation Foundation Model (NavFoM)", "https://arxiv.org/search/?query=Embodied+Navigation+Foundation+Model&searchtype=all"],
+      ],
+      "ICRA 2025": [
+        ["SpatialBot: Precise Spatial Understanding with Vision Language Models", "https://arxiv.org/abs/2406.13642"],
+        ["QUART-Online: Latency-Free Large Multimodal Model for Quadruped Robot Learning", "https://arxiv.org/abs/2412.15576"],
+      ],
+      "ICLR 2025": [
+        ["DenseMatcher: Learning 3D Semantic Correspondence from a Single Demo", "https://arxiv.org/abs/2412.05268"],
+        ["6D Object Pose Tracking in Internet Videos for Robotic Manipulation", "https://arxiv.org/abs/2503.10307"],
+      ],
+    }
+  },
+  // category 5: Sim2Real与跨具身迁移
+  "5. Sim2Real与跨具身迁移": {
+    icon: "🔄", cls: "cat-5",
+    papers: {
+      "RSS 2025": [
+        ["ASAP: Aligning Simulation and Real-World Physics for Agile Humanoid Skills", "https://arxiv.org/abs/2502.01143"],
+      ],
+      "CVPR 2025": [
+        ["Prof. Robot: Differentiable Robot Rendering Without Static Collisions", "https://arxiv.org/abs/2503.11269"],
+        ["AutoURDF: Unsupervised Robot Modeling from Point Cloud Frames", "https://arxiv.org/abs/2412.05507"],
+        ["Mitigating Human-Robot Domain Discrepancy in Visual Pre-training", "https://arxiv.org/abs/2406.14235"],
+      ],
+      "ICLR 2025": [
+        ["ReGen: Generative Robot Simulation via Inverse Design", "https://arxiv.org/search/?query=ReGen+Generative+Robot+Simulation&searchtype=all"],
+      ],
+      "ICLR 2026": [
+        ["X-VLA: Cross-Embodiment VLA Model", "https://arxiv.org/search/?query=X-VLA+Cross-Embodiment&searchtype=all"],
+        ["MetaVLA: Unified Meta Co-Training for Efficient Embodied Adaptation", "https://arxiv.org/search/?query=MetaVLA+Meta+Co-Training&searchtype=all"],
+      ],
+    }
+  },
+  // category 6: 多模态融合与感知
+  "6. 多模态融合与感知": {
+    icon: "🧩", cls: "cat-6",
+    papers: {
+      "CVPR 2025": [
+        ["3D-MVP: 3D Multiview Pretraining for Robotic Manipulation", "https://arxiv.org/abs/2406.18158"],
+        ["Touch2Shape: Touch-Conditioned 3D Diffusion for Shape Exploration", "https://arxiv.org/search/?query=Touch2Shape+Touch+Conditioned&searchtype=all"],
+        ["OmniManip: General Robotic Manipulation via Object-Centric Primitives", "https://arxiv.org/abs/2501.03841"],
+        ["A Data-Centric Revisit of Pre-Trained Vision Models for Robot Learning", "https://arxiv.org/abs/2503.06960"],
+      ],
+      "ICLR 2025": [
+        ["SPA*: 3D Spatial-Awareness Enables Effective Embodied Representation", "https://arxiv.org/abs/2410.08208"],
+        ["AHA: A VLM for Detecting and Reasoning Over Failures in Robotic Manipulation", "https://arxiv.org/abs/2410.00371"],
+      ],
+      "ICCV 2025": [
+        ["Moto: Latent Motion Token as the Bridging Language for Learning from Videos", "https://arxiv.org/abs/2412.04445"],
+        ["A0: An Affordance-Aware Hierarchical Model for General Robotic Manipulation", "https://arxiv.org/abs/2504.12636"],
+      ],
+      "ICRA 2025": [
+        ["MoRE: Unlocking Scalability in RL for Quadruped VLA Models", "https://arxiv.org/abs/2503.08007"],
+      ],
+    }
+  },
+  // category 7: 人机交互与指令跟随
+  "7. 人机交互与指令跟随": {
+    icon: "🗣️", cls: "cat-7",
+    papers: {
+      "CVPR 2025": [
+        ["SOLAMI: Social VLA Modeling for Immersive Interaction with 3D Characters", "https://arxiv.org/abs/2412.00174"],
+        ["Phoenix: Motion-based Self-Reflection for Fine-grained Robotic Action Correction", "https://arxiv.org/search/?query=Phoenix+Self-Reflection+Robotic&searchtype=all"],
+        ["Think Small, Act Big: Primitive Prompt Learning for Lifelong Manipulation", "https://arxiv.org/search/?query=Think+Small+Act+Big+Primitive+Prompt&searchtype=all"],
+      ],
+      "ICLR 2025": [
+        ["VLAS: VLA Model With Speech Instructions For Customized Manipulation", "https://arxiv.org/abs/2502.13508"],
+        ["LASeR: Towards Diversified Robot Design with LLMs", "https://arxiv.org/search/?query=LASeR+Robot+Design+LLM&searchtype=all"],
+        ["EMOS: Embodiment-aware Heterogeneous Multi-robot OS with LLM Agents", "https://arxiv.org/abs/2410.22662"],
+      ],
+      "NeurIPS 2025": [
+        ["Praxis-VLM: Vision-Grounded Decision Making via Text-Driven RL", "https://arxiv.org/search/?query=Praxis-VLM+Vision+Grounded&searchtype=all"],
+      ],
+    }
+  },
+  // category 8: 灵巧操作与抓取
+  "8. 灵巧操作与抓取": {
+    icon: "✋", cls: "cat-8",
+    papers: {
+      "RSS 2025": [
+        ["DOGlove: Dexterous Manipulation with Low-Cost Haptic Force Feedback Glove", "https://arxiv.org/pdf/2502.07730"],
+      ],
+      "CVPR 2025": [
+        ["UniGraspTransformer: Simplified Policy Distillation for Scalable Dexterous Grasping", "https://arxiv.org/abs/2412.02699"],
+        ["DexGrasp Anything: Universal Robotic Dexterous Grasping with Physics Awareness", "https://arxiv.org/abs/2503.08257"],
+        ["DexHandDiff: Interaction-aware Diffusion Planning for Adaptive Dexterous Manipulation", "https://arxiv.org/abs/2411.18562"],
+      ],
+      "CoRL 2025": [
+        ["GraspVLA: Grasping Foundation Model Pre-trained on Billion-Scale Synthetic Data", "https://arxiv.org/search/?query=GraspVLA+Billion+Scale&searchtype=all"],
+      ],
+      "ICLR 2025": [
+        ["SRSA: Skill Retrieval and Adaptation for Robotic Assembly Tasks", "https://arxiv.org/abs/2503.04538"],
+      ],
+    }
+  },
+  // category 9: 人形机器人全身控制
+  "9. 人形机器人全身控制": {
+    icon: "🤖", cls: "cat-9",
+    papers: {
+      "RSS 2025": [
+        ["ASAP: Aligning Simulation and Real-World Physics for Agile Humanoid Skills", "https://arxiv.org/abs/2502.01143"],
+      ],
+      "CVPR 2025": [
+        ["Let Humanoid Robots Go Hiking! Integrative Skill Development over Complex Trails", "https://arxiv.org/search/?query=Humanoid+Robots+Go+Hiking&searchtype=all"],
+        ["MobileH2R: Learning Generalizable Human to Mobile Robot Handover", "https://arxiv.org/abs/2501.04595"],
+      ],
+      "ICLR 2026": [
+        ["WholeBodyVLA: Towards Unified Latent VLA for Whole-body Loco-manipulation", "https://arxiv.org/search/?query=WholeBodyVLA+Whole+body+Loco&searchtype=all"],
+      ],
+      "NeurIPS 2025": [
+        ["AC-DiT: Adaptive Coordination Diffusion Transformer for Mobile Manipulation", "https://arxiv.org/search/?query=AC-DiT+Adaptive+Coordination&searchtype=all"],
+      ],
+    }
+  },
+  // category 10: 基准数据集与评估
+  "10. 基准数据集与评估": {
+    icon: "📊", cls: "cat-10",
+    papers: {
+      "CVPR 2025": [
+        ["RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins", "https://arxiv.org/abs/2409.02920"],
+        ["RoboSense: Large-scale Dataset and Benchmark for Egocentric Robot Perception", "https://arxiv.org/abs/2408.15503"],
+      ],
+      "ICLR 2025": [
+        ["VisualPredicator: Learning Abstract World Models with Neuro-Symbolic Predicates", "https://arxiv.org/abs/2410.23156"],
+      ],
+      "CoRL 2025": [
+        ["Mechanistic Interpretability for Steering VLA Models", "https://arxiv.org/search/?query=Mechanistic+Interpretability+Steering+VLA&searchtype=all"],
+      ],
+      "NeurIPS 2025": [
+        ["Failure Prediction at Runtime for Generative Robot Policies", "https://arxiv.org/search/?query=Failure+Prediction+Runtime+Generative+Robot&Policies&searchtype=all"],
+      ],
+      "ICRA 2025": [
+        ["SpatialBot: Precise Spatial Understanding Benchmark", "https://arxiv.org/abs/2406.13642"],
+      ],
+    }
+  },
+};
+
+// ===================== 工具函数 =====================
+const VENUE_TAGS = {
+  'ICLR 2026': {bg:'#e3f2fd',color:'#1565c0'},
+  'NeurIPS 2025': {bg:'#fce4ec',color:'#c62828'},
+  'CoRL 2025': {bg:'#f3e5f5',color:'#6a1b9a'},
+  'CVPR 2025': {bg:'#e8f5e9',color:'#2e7d32'},
+  'ICCV 2025': {bg:'#fff3e0',color:'#e65100'},
+  'ICML 2025': {bg:'#e0f7fa',color:'#00695c'},
+  'RSS 2025': {bg:'#fbe9e7',color:'#bf360c'},
+  'ICLR 2025': {bg:'#e3f2fd',color:'#1565c0'},
+  'ICRA 2025': {bg:'#f1f8e9',color:'#558b2f'},
+};
+
+function getAllPapers() {
+  const out = [];
+  for (const [cat, data] of Object.entries(P)) {
+    for (const [venue, plist] of Object.entries(data.papers)) {
+      for (const [title, url] of plist) {
+        out.push({ title, url, venue, category: cat });
+      }
+    }
+  }
+  return out;
+}
+
+function countAll() {
+  let total = 0;
+  for (const data of Object.values(P)) {
+    for (const plist of Object.values(data.papers)) total += plist.length;
+  }
+  let vla = 0;
+  for (const data of Object.values(P)) {
+    for (const plist of Object.values(data.papers)) {
+      for (const [title] of plist) {
+        if (title.includes('VLA') || title.includes('Vision-Language-Action')) vla++;
+      }
+    }
+  }
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-vla').textContent = vla;
+  return total;
+}
+
+// ===================== 渲染树形索引 =====================
+function renderTree(filter) {
+  const tree = document.getElementById('tree');
+  tree.innerHTML = '';
+  let matchTotal = 0;
+
+  for (const [cat, data] of Object.entries(P)) {
+    // count papers in category
+    let catCount = 0;
+    for (const plist of Object.values(data.papers)) catCount += plist.length;
+
+    const catDiv = document.createElement('div');
+    catDiv.className = 'tree-item ' + data.cls;
+
+    const toggle = document.createElement('div');
+    toggle.className = 'tree-toggle';
+    toggle.innerHTML =
+      '<span class="arrow open">▶</span>' +
+      '<span class="icon">' + data.icon + '</span>' +
+      '<span class="label">' + cat + '</span>' +
+      '<span class="count highlight">' + catCount + '</span>';
+    catDiv.appendChild(toggle);
+
+    const childrenDiv = document.createElement('div');
+    childrenDiv.className = 'tree-children open';
+
+    let hasMatch = false;
+    for (const [venue, plist] of Object.entries(data.papers)) {
+      const filtered = filter
+        ? plist.filter(function(x) { return x[0].toLowerCase().includes(filter.toLowerCase()); })
+        : plist;
+      if (filter && filtered.length === 0) continue;
+      hasMatch = true;
+      matchTotal += filtered.length;
+
+      const venueDiv = document.createElement('div');
+      venueDiv.className = 'tree-item';
+
+      const vt = document.createElement('div');
+      vt.className = 'tree-toggle';
+      vt.style.paddingLeft = '20px';
+      vt.innerHTML =
+        '<span class="arrow open">▶</span>' +
+        '<span class="label" style="font-size:12.5px;">' + venue + '</span>' +
+        '<span class="count">' + filtered.length + '</span>';
+      venueDiv.appendChild(vt);
+
+      const papersDiv = document.createElement('div');
+      papersDiv.className = 'tree-children open';
+      for (const x of filtered) {
+        const a = document.createElement('a');
+        a.className = 'paper-link';
+        a.href = x[1];
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = x[0];
+        papersDiv.appendChild(a);
+      }
+      venueDiv.appendChild(papersDiv);
+
+      (function(vtEl, pDiv) {
+        vtEl.addEventListener('click', function() {
+          vtEl.querySelector('.arrow').classList.toggle('open');
+          pDiv.classList.toggle('open');
+        });
+      })(vt, papersDiv);
+
+      childrenDiv.appendChild(venueDiv);
+    }
+
+    if (filter && !hasMatch) continue;
+    catDiv.appendChild(childrenDiv);
+
+    (function(toggleEl, childrenEl) {
+      toggleEl.addEventListener('click', function() {
+        toggleEl.querySelector('.arrow').classList.toggle('open');
+        childrenEl.classList.toggle('open');
+      });
+    })(toggle, childrenDiv);
+
+    tree.appendChild(catDiv);
+  }
+
+  if (filter) {
+    document.getElementById('stat-total').textContent = matchTotal;
+  }
+}
+
+// ===================== 渲染主内容区 =====================
+function renderMain(filter, venueFilter) {
+  const grid = document.getElementById('paper-grid');
+  const empty = document.getElementById('empty-state');
+  grid.innerHTML = '';
+
+  let papers = getAllPapers();
+  if (venueFilter) {
+    papers = papers.filter(function(p) { return p.venue === venueFilter; });
+  }
+  if (filter) {
+    var f = filter.toLowerCase();
+    papers = papers.filter(function(p) {
+      return p.title.toLowerCase().includes(f) || p.venue.toLowerCase().includes(f);
+    });
+  }
+
+  if (papers.length === 0) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  papers.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'paper-card';
+    var tag = VENUE_TAGS[p.venue] || {bg:'#eceff1',color:'#37474f'};
+    card.innerHTML =
+      '<a class="paper-card-title" href="' + p.url + '" target="_blank" rel="noopener">' +
+        hl(p.title, filter) + '</a>' +
+      '<div class="paper-card-meta">' +
+        '<span style="background:' + tag.bg + ';color:' + tag.color + ';padding:1px 7px;border-radius:4px;font-size:11px;font-weight:500;">' + p.venue + '</span>' +
+        '<span>' + p.category.replace(/^\d+\.\s/, '') + '</span>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+function hl(text, filter) {
+  if (!filter) return text;
+  var idx = text.toLowerCase().indexOf(filter.toLowerCase());
+  if (idx === -1) return text;
+  return text.slice(0, idx) + '<span class="highlight">' + text.slice(idx, idx + filter.length) + '</span>' + text.slice(idx + filter.length);
+}
+
+// ===================== 搜索和筛选 =====================
+function onSearch(val) {
+  renderTree(val);
+  var active = document.querySelector('.filter-btn.active');
+  var vf = active && active.textContent !== 'All' ? active.textContent : '';
+  renderMain(val, vf);
+}
+
+function renderFilterBar() {
+  var bar = document.getElementById('filter-bar');
+  var venues = ['All', 'ICLR 2026', 'NeurIPS 2025', 'CoRL 2025', 'CVPR 2025', 'ICCV 2025', 'ICLR 2025', 'ICML 2025', 'RSS 2025', 'ICRA 2025'];
+  bar.innerHTML = '';
+  venues.forEach(function(v) {
+    var btn = document.createElement('button');
+    btn.className = 'filter-btn' + (v === 'All' ? ' active' : '');
+    btn.textContent = v;
+    (function(vv) {
+      btn.onclick = function() {
+        var allBtns = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove('active');
+        btn.classList.add('active');
+        renderMain(document.getElementById('search-input').value, vv === 'All' ? '' : vv);
+      };
+    })(v);
+    bar.appendChild(btn);
+  });
+}
+
+// ===================== 初始化 =====================
+renderTree('');
+renderFilterBar();
+renderMain('', '');
+countAll();
+</script>
+</body>
+</html>
