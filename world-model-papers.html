@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLA 免真机 · 世界模型方向论文索引 (2025-2026)</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-card: #161b22;
+  --bg-hover: #1c2128;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --accent-hover: #79c0ff;
+  --green: #3fb950;
+  --orange: #d29922;
+  --red: #f85149;
+  --purple: #bc8cff;
+  --pink: #f778ba;
+  --teal: #2dd4bf;
+}
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-card: #f6f8fa;
+  --bg-hover: #eaeef2;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-secondary: #636c76;
+  --accent: #0969da;
+  --accent-hover: #0550ae;
+  --green: #1a7f37;
+  --orange: #9a6700;
+  --red: #cf222e;
+  --purple: #8250df;
+  --pink: #bf3989;
+  --teal: #0d9488;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 60px 0 40px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+[data-theme="light"] header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+header h1 {
+  color: #fff;
+  font-size: 2.2em;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+header p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.05em;
+  max-width: 700px;
+  margin: 0 auto;
+}
+header .stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+header .stat {
+  color: rgba(255,255,255,0.9);
+}
+header .stat .num {
+  font-size: 1.8em;
+  font-weight: 700;
+  display: block;
+}
+header .stat .label {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s;
+}
+.theme-toggle:hover { transform: scale(1.1); }
+
+/* Controls */
+.controls {
+  padding: 25px 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+.controls-inner {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.95em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box:focus { border-color: var(--accent); }
+.filter-btn {
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--text); }
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Paper grid */
+.papers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+  padding: 25px 0 60px;
+}
+.paper-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.paper-card:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.paper-card .title {
+  font-size: 1.02em;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+}
+.paper-card .title a {
+  color: inherit;
+  text-decoration: none;
+}
+.paper-card .title a:hover { color: var(--accent-hover); }
+.paper-card .desc {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+.paper-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag.venue-iclr { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+.tag.venue-cvpr { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+.tag.venue-iccv { background: rgba(247,120,186,0.15); color: var(--pink); border: 1px solid rgba(247,120,186,0.3); }
+.tag.venue-neurips { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.tag.venue-corl { background: rgba(210,153,34,0.15); color: var(--orange); border: 1px solid rgba(210,153,34,0.3); }
+.tag.venue-arxiv { background: rgba(139,148,158,0.15); color: var(--text-secondary); border: 1px solid rgba(139,148,158,0.3); }
+.tag.venue-survey { background: rgba(45,212,191,0.15); color: var(--teal); border: 1px solid rgba(45,212,191,0.3); }
+.tag.cat-wm { background: rgba(248,81,73,0.12); color: var(--red); border: 1px solid rgba(248,81,73,0.25); }
+.tag.cat-gen { background: rgba(188,140,255,0.12); color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+.tag.cat-sim { background: rgba(63,185,80,0.12); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+.tag.oral { background: rgba(210,153,34,0.2); color: var(--orange); border: 1px solid rgba(210,153,34,0.4); }
+.tag.year { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+.paper-card .links {
+  display: flex;
+  gap: 10px;
+  font-size: 0.82em;
+}
+.paper-card .links a {
+  color: var(--accent);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.paper-card .links a:hover { text-decoration: underline; }
+
+/* Section headers */
+.section-header {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-header .count {
+  font-size: 0.6em;
+  color: var(--text-secondary);
+  font-weight: 400;
+  background: var(--bg-card);
+  padding: 2px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+.section-header:first-child { margin-top: 0; }
+
+/* No results */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 1.1em;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 0;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+footer a { color: var(--accent); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .papers-grid { grid-template-columns: 1fr; }
+  header h1 { font-size: 1.6em; }
+  .controls-inner { flex-direction: column; align-items: stretch; }
+  .filter-group { justify-content: center; }
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+<header>
+  <div class="container">
+    <h1>VLA 免真机 · 世界模型方向论文索引</h1>
+    <p>聚焦 2025-2026 年顶会中「世界模型 + VLA」方向的研究，涵盖无需真机执行的训练、评估与数据生成范式</p>
+    <div class="stats">
+      <div class="stat"><span class="num" id="stat-total">0</span><span class="label">论文总数</span></div>
+      <div class="stat"><span class="num" id="stat-venue">0</span><span class="label">顶会来源</span></div>
+      <div class="stat"><span class="num">2025-2026</span><span class="label">时间范围</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="container">
+    <div class="controls-inner">
+      <input type="text" class="search-box" id="search" placeholder="搜索论文标题、描述、关键词..." oninput="filterPapers()">
+      <div class="filter-group" id="venue-filters">
+        <button class="filter-btn active" data-filter="venue" data-value="all">全部会议</button>
+        <button class="filter-btn" data-filter="venue" data-value="ICLR 2026">ICLR 2026</button>
+        <button class="filter-btn" data-filter="venue" data-value="CVPR 2025">CVPR 2025</button>
+        <button class="filter-btn" data-filter="venue" data-value="ICCV 2025">ICCV 2025</button>
+        <button class="filter-btn" data-filter="venue" data-value="NeurIPS 2025">NeurIPS 2025</button>
+        <button class="filter-btn" data-filter="venue" data-value="arXiv">arXiv</button>
+        <button class="filter-btn" data-filter="venue" data-value="Survey">综述</button>
+      </div>
+      <div class="filter-group" id="cat-filters">
+        <button class="filter-btn active" data-filter="cat" data-value="all">全部分类</button>
+        <button class="filter-btn" data-filter="cat" data-value="wm">世界模型</button>
+        <button class="filter-btn" data-filter="cat" data-value="gen">生成模型</button>
+        <button class="filter-btn" data-filter="cat" data-value="sim">仿真环境</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="papers-grid" id="papers-grid"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>VLA World Model Paper Index · 自动整理 · 持续更新中</p>
+    <p style="margin-top:8px">论文来源：ICLR / CVPR / ICCV / NeurIPS / CoRL / arXiv · 最后更新：2026-06-24</p>
+  </div>
+</footer>
+
+<script>
+const papers = [
+  // ==================== ICLR 2026 - World Model ====================
+  {
+    title: "Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    arxiv: "2508.05635",
+    desc: "将多视角视频世界模型（GE-Base）与轻量并行动作解码器（GE-Act）统一进视频生成框架，让 VLA 策略在'想象空间'里闭环 rollout，无需真机即可评估策略，并通过合成成功轨迹微调将策略成功率提升 44.7%。",
+    oral: false
+  },
+  {
+    title: "Ctrl-World: A Controllable Generative World Model for Robot Manipulation",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    arxiv: "2510.10125",
+    project: "https://github.com/Robert-gyj/Ctrl-World",
+    desc: "将预训练被动视频扩散模型改造为可控、多视角、长时一致的机器人世界模型，支持在模型'想象'中完成闭环策略评估与改进，让通用 VLA 策略无需真机即可被评测和增强。",
+    oral: false
+  },
+  {
+    title: "Empowering Multi-Robot Cooperation via Sequential World Models (SeqWM)",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    arxiv: "2509.13095",
+    desc: "将序列化（自回归）范式引入多机器人模型强化学习，每个机器人独立维护世界模型并顺序传递预测轨迹，涌现出预测适应、时序对齐、角色分工等高级协作行为，成功完成 sim-to-real 迁移。",
+    oral: false
+  },
+  {
+    title: "Test-Time Mixture of World Models for Embodied Agents in Dynamic Environments",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "面向动态环境中具身智能体的测试时世界模型混合方法，通过在推理时动态组合多个世界模型来适应环境变化，无需额外真机训练。",
+    oral: false
+  },
+  {
+    title: "World-In-World: World Models in a Closed-Loop World",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    arxiv: "2510.18135",
+    project: "https://world-in-world.github.io/",
+    desc: "首个把生成式世界模型放进闭环具身环境中评测的开放平台。发现画质好不等于任务成功（可控性更重要）、动作-观测数据后训练比换更强的视频生成器更有效、增加推理时计算量能显著提升闭环表现。",
+    oral: true
+  },
+  {
+    title: "WorldGym: World Model as an Environment for Policy Evaluation",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    arxiv: "2506.00613",
+    desc: "训练动作条件的自回归视频世界模型，把它当作'虚拟环境'让机器人策略跑 rollout 并用 VLM 打分。世界模型里的成功率与真实世界成功率高度相关（Pearson r=0.78），真机部署前即可预估策略质量。",
+    oral: false
+  },
+  {
+    title: "Sparse Imagination for Efficient Visual World Model Planning",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "在基于 ViT patch token 的世界模型规划中通过随机丢弃 token 和随机分组注意力训练实现大幅推理加速（50% 丢弃率可减少约 50% 规划时间），同时保持甚至超越全量 token 的规划性能。",
+    oral: false
+  },
+  {
+    title: "WMPO: World Model-based Policy Optimization for Vision-Language-Action Models",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "将 VLA 策略的强化学习整个搬进像素空间的动作条件视频世界模型里'做梦'，用世界模型想象出完整轨迹、轻量奖励模型判成败、再跑 on-policy GRPO，无需真机交互即可显著提升样本效率，并涌现出自纠错行为。",
+    oral: false
+  },
+  {
+    title: "ENACT: Evaluating Embodied Cognition with World Modeling of Egocentric Interaction",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "将具身认知评测形式化为基于一人称交互的世界建模 VQA——通过正向/逆向序列重排任务，系统揭示当前顶级 VLM 在长时域交互推理中相较人类的显著差距及拟人化偏见。",
+    oral: false
+  },
+  {
+    title: "ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "联合学习符号化状态抽象和因果过程，通过变分贝叶斯推断 + LLM 提议从少量轨迹中学习带随机延迟的因果世界模型，在 5 个桌面机器人环境中实现快速泛化规划。",
+    oral: false
+  },
+  {
+    title: "LIFT: Towards Bridging the Gap between Large-Scale Pretraining and Efficient Finetuning for Humanoid Control",
+    venue: "ICLR 2026", cat: "wm", year: "2026",
+    desc: "提出预训练-微调三阶段框架，其中第二阶段基于拉格朗日动力学的物理先验世界模型离线预训练，在 Booster T1 和 Unitree G1 人形机器人上验证了从仿真到真实世界的全流程。",
+    oral: false
+  },
+
+  // ==================== ICLR 2026 - Generative Model ====================
+  {
+    title: "Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    arxiv: "2601.16163",
+    project: "https://research.nvidia.com/labs/cosmos-lab/cosmos-policy/",
+    desc: "以预训练视频生成大模型 Cosmos-Predict2-2B 为底座，一阶段微调让模型同时充当策略、世界模型和价值函数。在 LIBERO（98.5%）、RoboCasa（67.1%）和真实双臂 ALOHA 任务上均达 SOTA。",
+    oral: false
+  },
+  {
+    title: "Compositional Diffusion with Guided Search for Long-Horizon Planning",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    desc: "将'种群式搜索'嵌进扩散去噪过程，用迭代重采样做局部到全局的消息传递，让短程扩散模型组合出全局连贯的长程计划，在机器人规划、全景图、长视频上通吃。",
+    oral: false
+  },
+  {
+    title: "Contractive Diffusion Policies",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    desc: "用收缩理论把'让相邻去噪轨迹相互靠拢'转化成对 score 网络 Jacobian 最大特征值的可微惩罚，只加一个超参数和一项轻量损失就能塞进已有扩散策略，在数据稀缺时增益尤其明显。",
+    oral: false
+  },
+  {
+    title: "Masked Generative Policy for Robotic Control",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    desc: "把机器人动作离散化成 token，用图像生成里的'掩码生成 Transformer'一次并行预测整段动作、再只重采样低置信 token，同时甩掉扩散策略的多步去噪和自回归策略的逐 token 解码两个瓶颈。",
+    oral: false
+  },
+  {
+    title: "Much Ado About Noising: Dispelling the Myths of Generative Robotic Control",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    desc: "系统性'祛魅'生成式机器人控制策略（GCP）——通过 28 个行为克隆 benchmark 的严格消融，证明 GCP 优于回归策略的真正原因是'训练阶段注入噪声 + 受监督的迭代计算'这一组合。",
+    oral: false
+  },
+  {
+    title: "Unified Diffusion VLA (UD-VLA): Vision-Language-Action Model via Joint Discrete Denoising Diffusion Process",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    arxiv: "2511.01718",
+    project: "https://irpn-eai.github.io/UD-VLA.github.io/",
+    desc: "把'看图读指令 → 生成未来画面 → 推断动作'三件事压进同一条离散去噪轨迹（JD3P），让动作 token 在每一步去噪时都能反复盯着逐渐清晰的未来图像 token 来精修自己，推理速度提到自回归方法的 4 倍。",
+    oral: false
+  },
+  {
+    title: "RIGVid: Robotic Manipulation by Imitating Generated Videos Without Physical Demonstrations",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    arxiv: "2507.00990",
+    desc: "让机器人仅靠'AI 生成的视频'完成倒水、扫垃圾等操作——用视频扩散模型生成示范视频、用 VLM 过滤失败生成、再从视频里追踪物体 6D 位姿轨迹并重定向到机械臂执行，全程不需要任何真实示范或机器人训练数据。",
+    oral: false
+  },
+  {
+    title: "ViPRA: Video Prediction for Robot Actions",
+    venue: "ICLR 2026", cat: "gen", year: "2026",
+    arxiv: "2511.07732",
+    desc: "将视频预测模型改造成机器人策略：先从大量无动作标签的人类/机器人视频里自监督学出运动中心的离散潜动作，再用视频-语言模型联合预测未来画面+潜动作序列做预训练，最后用分块流匹配解码器映射成连续动作。",
+    oral: false
+  },
+
+  // ==================== ICLR 2026 - Simulation ====================
+  {
+    title: "RoboCasa365: A Large-Scale Simulation Framework for Training and Benchmarking Generalist Robots",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "构建包含 365 个日常厨房任务、2500 个多样化厨房场景和超过 2000 小时机器人交互数据的大规模仿真基准，系统评估多任务学习、基础模型训练和终身学习三大范式下通用机器人策略的性能。",
+    oral: false
+  },
+  {
+    title: "AutoBio: A Simulation and Benchmark for Robotic Automation in Digital Biology Laboratory",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "把'生物实验室里机器人做实验'做成可仿真、可生成示范、可评测的 benchmark——用 3D 高斯泼溅把真实仪器数字化、给 MuJoCo 补上实验室专属物理，在 16 个生物实验任务上跑通主流 VLA。",
+    oral: false
+  },
+  {
+    title: "ArtVIP: Articulated Digital Assets of Visual Realism, Modular Interaction, and Physical Fidelity for Robot Learning",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "构建 992 个高质量数字孪生关节物体和配套室内场景，通过统一建模规范、关节物理调参、资产内嵌交互行为与像素级 affordance 标注，让机器人学习算法在更接近真实世界的仿真环境中训练和评测。",
+    oral: false
+  },
+  {
+    title: "Virtual Community: An Open World for Humans, Robots, and Society",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "基于 Genesis 物理引擎、用真实地理空间数据自动生成开放世界场景与智能体社群的具身多智能体仿真平台，让人形 avatar 与多种机器人在同一物理世界里共存交互。",
+    oral: false
+  },
+  {
+    title: "UrbanVerse: Scaling Urban Simulation by Watching City-Tour Videos",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "数据驱动的 real-to-sim 系统，将众包城市旅拍视频转化为物理感知的交互式仿真场景，包含 10 万+标注 3D 资产，训练的 PPO 导航策略在真实世界零样本转移中成功率达 89.7%。",
+    oral: false
+  },
+  {
+    title: "RobotArena ∞: Scalable Robot Benchmarking via Real-to-Sim Translation",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "把真实机器人演示视频自动翻译成仿真数字孪生、再在其中部署 VLA 策略并用'VLM 进度分 + 众包人类成对偏好'双轨打分的可扩展评测框架，用 8500+ 对偏好比较了来自全球实验室的 6 个 VLA。",
+    oral: false
+  },
+  {
+    title: "D-REX: Differentiable Real-to-Sim-to-Real Engine for Learning Dexterous Grasping",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "提出基于高斯表示的可微 real-to-sim-to-real 引擎，通过视觉观测和机器人控制信号进行端到端物体质量辨识，并利用辨识的质量进行力感知的灵巧抓取策略学习，有效缩小 sim-to-real 差距。",
+    oral: false
+  },
+  {
+    title: "Manipulation as in Simulation: Enabling Accurate Geometry Perception in Robots",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "提出相机专属的 Camera Depth Models，把真实深度相机的粗糙 RGB-D 输入校正成接近仿真的高质量度量深度，从而让只在仿真干净深度上训练的机器人操作策略可以零微调迁移到真实长程任务。",
+    oral: false
+  },
+  {
+    title: "Found-adapt: Latent Adaptation of Foundation Policies for Sim-to-Real Transfer",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "先在模拟器离线轨迹上预训练可复用的 latent-conditioned foundation policy，再在部署时只用少量目标域数据修正隐变量，从而在不重训策略网络的情况下缓解机器人运动控制中的动力学 sim-to-real gap。",
+    oral: false
+  },
+  {
+    title: "Statistical Guarantees for Offline Domain Randomization",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "将离线域随机化（ODR）形式化为参数化仿真器族上的最大似然估计问题，在温和的正则性和可辨识性假设下证明了弱一致性和强一致性，为 ODR 在 sim-to-real 迁移中的经验成功提供了首个理论基础。",
+    oral: false
+  },
+  {
+    title: "Differentiable Simulation of Hard Contacts with Soft Gradients for Learning and Control",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "针对惩罚式仿真器在硬接触下自动微分梯度失真的问题，用自适应步长积分修正离散化梯度误差，再用距离接触 CFD + 直通技巧给未接触物体注入有信息量的梯度。",
+    oral: false
+  },
+  {
+    title: "Accelerated Co-design of Robots through Morphological Pretraining",
+    venue: "ICLR 2026", cat: "sim", year: "2026",
+    desc: "用可微仿真把一个与形态无关的通用控制器在上千万个机器人身体上一次性训练好，再用这个冻结的控制器零样本评估任意身体改动的好坏，把机器人'身体+大脑'协同设计速度提升一个数量级。",
+    oral: false
+  },
+
+  // ==================== CVPR 2025 ====================
+  {
+    title: "MoSim: Neural Motion Simulator — Pushing the Limit of World Models in Reinforcement Learning",
+    venue: "CVPR 2025", cat: "wm", year: "2025",
+    arxiv: "2504.07095",
+    desc: "基于刚体动力学先验和 Neural ODE 的世界模型，可在物理状态空间中进行高精度长时域预测，首次实现零样本强化学习——无需真实环境交互即可训练策略，突破了现有世界模型在 RL 中的应用上限。",
+    oral: false
+  },
+  {
+    title: "ManiVideo: Generating Hand-Object Manipulation Video with Dexterous and Generalizable Grasping",
+    venue: "CVPR 2025", cat: "gen", year: "2025",
+    desc: "首个支持灵巧双手操作、可泛化物体外观的手-物操作视频生成框架，整合 Objaverse 大规模 3D 物体数据优化手-物遮挡关系建模，可用于生成合成训练数据。",
+    oral: false
+  },
+  {
+    title: "RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins",
+    venue: "CVPR 2025", cat: "sim", year: "2025",
+    desc: "基于生成式数字孪生的双臂机器人基准框架，用 3D 生成模型从单张 2D 图像创建物体数字孪生，自动生成机器人操作代码，仿真预训练+少量真实数据微调后单臂任务成功率提升 70%、双臂提升 40%。",
+    oral: false
+  },
+
+  // ==================== ICCV 2025 ====================
+  {
+    title: "GWM: Towards Scalable Gaussian World Models for Robotic Manipulation",
+    venue: "ICCV 2025", cat: "wm", year: "2025",
+    arxiv: "2508.17600",
+    project: "https://gaussian-world-model.github.io/",
+    desc: "提出高斯世界模型（GWM），将 3D-GS 与高容量生成模型结合，通过推断机器人动作影响下高斯基元的传播来重建未来状态，为机器人操作提供了一种新型的 3D 世界模型分支。",
+    oral: false
+  },
+
+  // ==================== NeurIPS 2025 ====================
+  {
+    title: "RoboScape: Physics-informed Embodied World Model",
+    venue: "NeurIPS 2025", cat: "wm", year: "2025",
+    arxiv: "2506.23135",
+    desc: "统一物理信息世界模型，联合学习 RGB 视频生成和物理知识（深度感知+关键点动力学），在集成框架中同时生成逼真视频和物理一致的未来预测，为机器人操作提供物理可靠的世界模拟。",
+    oral: false
+  },
+  {
+    title: "Persistent Embodied World Models with Explicit Memory",
+    venue: "NeurIPS 2025", cat: "wm", year: "2025",
+    desc: "提出具有显式记忆的持久具身世界模型，能够记忆先前生成的内容，实现更一致的长时域仿真，解决了现有世界模型在长程任务中的一致性问题。",
+    oral: false
+  },
+
+  // ==================== arXiv 2025-2026 ====================
+  {
+    title: "WorldVLA: Towards Autoregressive Action World Model",
+    venue: "arXiv", cat: "wm", year: "2025",
+    arxiv: "2506.21539",
+    desc: "阿里达摩院提出的自回归动作世界模型，将 VLA 动作模型与世界模型统一到单个自回归框架中——动作模型从图像+指令生成动作、世界模型从图像+动作预测下一帧——两者共享权重、互相增强。",
+    oral: false
+  },
+  {
+    title: "PhysWorld: Robot Learning from a Physical World Model",
+    venue: "arXiv", cat: "wm", year: "2025",
+    arxiv: "2511.07416",
+    desc: "通过物理世界建模使机器人能从视频生成模型中学习。利用视频生成模型合成物理一致的未来状态，作为机器人策略的训练数据，绕过真机数据采集瓶颈。",
+    oral: false
+  },
+  {
+    title: "DreamGen: Unlocking Generalization in Robot Learning through Video World Models",
+    venue: "arXiv", cat: "wm", year: "2025",
+    arxiv: "2505.12705",
+    project: "https://research.nvidia.com/labs/lpr/publication/jang2025neural/",
+    desc: "NVIDIA 提出的 4 阶段管线，利用视频世界模型生成机器人的'梦境'视频（合成数据），将其转化为动作指令，让机器人仅通过少量真实操作数据就能学会在新环境和新行为上泛化。",
+    oral: false
+  },
+  {
+    title: "DreMa: Dream to Manipulate — Compositional World Models Empowering Robot Manipulation",
+    venue: "arXiv", cat: "wm", year: "2025",
+    arxiv: "2412.14957",
+    project: "https://dreamtomanipulate.github.io/",
+    desc: "提出组合式操作世界模型 DreMa，结合实时高斯泼溅渲染和物理模拟器，让机器人利用物理可靠的预测来泛化到新场景，是首个将高斯泼溅世界模型用于操作任务的工作。",
+    oral: false
+  },
+  {
+    title: "NVIDIA Cosmos: World Foundation Models for Physical AI",
+    venue: "arXiv", cat: "wm", year: "2025",
+    project: "https://www.nvidia.com/en-us/ai/cosmos/",
+    desc: "NVIDIA 推出的世界基础模型平台，能预测和生成基于物理学的逼真合成视频，用于训练和评估机器人策略模型。通过 Isaac GR00T-Dreams 蓝图展示合成轨迹数据加速机器人学习的应用。",
+    oral: false
+  },
+  {
+    title: "Genie 3: A New Frontier for World Models",
+    venue: "arXiv", cat: "wm", year: "2025",
+    project: "https://deepmind.google/models/genie/",
+    desc: "Google DeepMind 发布的通用世界模型 Genie 3，可通过简单文本描述生成可实时探索的逼真交互环境（24fps），支持分钟级一致性，可用于机器人训练的合成环境生成。",
+    oral: false
+  },
+  {
+    title: "IRASim: Learning Robotic Action World Models",
+    venue: "arXiv", cat: "wm", year: "2024",
+    project: "https://github.com/bytedance/IRASim",
+    desc: "字节跳动提出的机器人动作世界模型，利用生成模型生成机器人执行给定动作轨迹的逼真视频，可作为合成数据源增强策略训练，减少对真机数据的依赖。",
+    oral: false
+  },
+  {
+    title: "Qwen-RobotWorld: Unifying Embodied World Models with Language Actions",
+    venue: "arXiv", cat: "wm", year: "2026",
+    arxiv: "2606.17030",
+    desc: "阿里巴巴提出的语言条件视频世界模型，以自然语言作为统一动作接口，预测物理一致的未来状态，为具身智能提供了一种以语言驱动的世界模型范式。",
+    oral: false
+  },
+  {
+    title: "RoboDream: Compositional World Models for Scalable Robot Data Generation",
+    venue: "arXiv", cat: "wm", year: "2026",
+    arxiv: "2606.02577",
+    desc: "提出可泛化的以具身体为中心的世界模型，通过合成具有新物体、新场景的逼真示范来实现可扩展的数据生成，大幅减少对真机演示数据的依赖。",
+    oral: false
+  },
+
+  // ==================== Surveys ====================
+  {
+    title: "World Model for Robot Learning: A Comprehensive Survey",
+    venue: "Survey", cat: "wm", year: "2026",
+    arxiv: "2605.00080",
+    desc: "从策略视角系统综述机器人学习中的世界模型，聚焦预测模型如何与 VLA 策略耦合以支持动作生成、规划、RL 和评估，涵盖机器人视频世界模型作为学习模拟器的应用。",
+    oral: false
+  },
+  {
+    title: "A Step Toward World Models: A Survey on Robotic Manipulation",
+    venue: "Survey", cat: "wm", year: "2025",
+    arxiv: "2511.02097",
+    desc: "超越固定定义，审视那些展现世界模型核心能力的机器人操作方法，提炼核心组件、能力和未来方向，为理解世界模型在操作任务中的作用提供了新视角。",
+    oral: false
+  },
+];
+
+// State
+let activeVenue = 'all';
+let activeCat = 'all';
+let searchTerm = '';
+
+function getVenueClass(venue) {
+  const map = {
+    'ICLR 2026': 'iclr', 'CVPR 2025': 'cvpr', 'ICCV 2025': 'iccv',
+    'NeurIPS 2025': 'neurips', 'arXiv': 'arxiv', 'Survey': 'survey'
+  };
+  return map[venue] || 'arxiv';
+}
+
+function getCatLabel(cat) {
+  const map = { 'wm': '世界模型', 'gen': '生成模型', 'sim': '仿真环境' };
+  return map[cat] || cat;
+}
+
+function renderPapers() {
+  const grid = document.getElementById('papers-grid');
+  const filtered = papers.filter(p => {
+    if (activeVenue !== 'all' && p.venue !== activeVenue) return false;
+    if (activeCat !== 'all' && p.cat !== activeCat) return false;
+    if (searchTerm) {
+      const s = searchTerm.toLowerCase();
+      return p.title.toLowerCase().includes(s) ||
+             p.desc.toLowerCase().includes(s) ||
+             p.venue.toLowerCase().includes(s);
+    }
+    return true;
+  });
+
+  // Group by venue
+  const venueOrder = ['ICLR 2026', 'NeurIPS 2025', 'ICCV 2025', 'CVPR 2025', 'arXiv', 'Survey'];
+  const grouped = {};
+  venueOrder.forEach(v => { grouped[v] = []; });
+  filtered.forEach(p => {
+    if (!grouped[p.venue]) grouped[p.venue] = [];
+    grouped[p.venue].push(p);
+  });
+
+  let html = '';
+  let totalShown = 0;
+
+  venueOrder.forEach(venue => {
+    if (!grouped[venue] || grouped[venue].length === 0) return;
+    totalShown += grouped[venue].length;
+    html += `<div class="section-header">${venue} <span class="count">${grouped[venue].length} 篇</span></div>`;
+
+    grouped[venue].forEach(p => {
+      const venueClass = getVenueClass(p.venue);
+      let links = '';
+      if (p.arxiv) links += `<a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">📄 arXiv</a>`;
+      if (p.project) links += `<a href="${p.project}" target="_blank">🔗 项目</a>`;
+      if (!p.arxiv && !p.project) links = '<span style="color:var(--text-secondary);font-size:0.82em">暂无公开链接</span>';
+
+      html += `
+        <div class="paper-card">
+          <div class="title">${p.title}</div>
+          <div class="desc">${p.desc}</div>
+          <div class="tags">
+            <span class="tag venue-${venueClass}">${p.venue}</span>
+            <span class="tag cat-${p.cat}">${getCatLabel(p.cat)}</span>
+            <span class="tag year">${p.year}</span>
+            ${p.oral ? '<span class="tag oral">🏆 Oral</span>' : ''}
+          </div>
+          <div class="links">${links}</div>
+        </div>
+      `;
+    });
+  });
+
+  if (filtered.length === 0) {
+    html = '<div class="no-results">未找到匹配的论文，请调整搜索条件 🤔</div>';
+  }
+
+  grid.innerHTML = html;
+  document.getElementById('stat-total').textContent = papers.length;
+  const venues = new Set(papers.map(p => p.venue));
+  document.getElementById('stat-venue').textContent = venues.size;
+}
+
+function filterPapers() {
+  searchTerm = document.getElementById('search').value;
+  renderPapers();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filterType = btn.dataset.filter;
+    const value = btn.dataset.value;
+    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (filterType === 'venue') activeVenue = value;
+    if (filterType === 'cat') activeCat = value;
+    renderPapers();
+  });
+});
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  document.querySelector('.theme-toggle').textContent = next === 'light' ? '☀️' : '🌙';
+  localStorage.setItem('theme', next);
+}
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+  document.documentElement.setAttribute('data-theme', 'light');
+  document.querySelector('.theme-toggle').textContent = '☀️';
+}
+
+renderPapers();
+</script>
+</body>
+</html>
